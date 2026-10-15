@@ -1,0 +1,31 @@
+# nexbank/docker-compose.yml
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine        # alpine = smaller image, same Postgres
+    container_name: nexbank_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nexbank
+      POSTGRES_PASSWORD: nexbank_dev  # local dev only — never a real password
+      POSTGRES_DB: nexbank
+    ports:
+      - '5432:5432'   # host:container — lets our Node app on the host talk to it
+    volumes:
+      - nexbank_pgdata:/var/lib/postgresql/data   # data persists between restarts
+  postgres_test:
+    image: postgres:16-alpine
+    container_name: nexbank_postgres_test
+    environment:
+      POSTGRES_USER: nexbank
+      POSTGRES_PASSWORD: nexbank_dev
+      POSTGRES_DB: nexbank_test      # separate database
+    ports:
+      - '5433:5432'                  # different host port so they don't collide
+    volumes:
+      - nexbank_pgdata_test:/var/lib/postgresql/data
+
+volumes:
+  nexbank_pgdata:
+  nexbank_pgdata_test:

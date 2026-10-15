@@ -1,0 +1,44 @@
+enum KycStatus {
+  UNVERIFIED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum UserRole {
+  USER
+  SUPPORT
+  ADMIN
+}
+
+type AdminUser {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  role: UserRole!
+  kycStatus: KycStatus!
+  isActive: Boolean!
+  isFrozen: Boolean!
+  frozenReason: String
+  createdAt: String!
+  lastLoginAt: String
+}
+
+type PaginatedUsers {
+  users: [AdminUser!]!
+  total: Int!
+  page: Int!
+  pageSize: Int!
+}
+
+extend type Query {
+  adminUsers(page: Int, pageSize: Int, kycStatus: KycStatus): PaginatedUsers!
+  adminUser(id: ID!): AdminUser
+}
+
+extend type Mutation {
+  adminFreezeUser(userId: ID!, reason: String!): Boolean!
+  adminUnfreezeUser(userId: ID!): Boolean!
+  adminUpdateKyc(userId: ID!, status: KycStatus!, notes: String): Boolean!
+}

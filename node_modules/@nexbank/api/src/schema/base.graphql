@@ -1,0 +1,13 @@
+scalar BigInt
+
+type Query {
+    _placeholder: Boolean
+}
+
+type Mutation {
+    _placeholder: Boolean
+}
+
+extend type Query {
+  me: String
+}

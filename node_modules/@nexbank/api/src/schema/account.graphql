@@ -1,0 +1,53 @@
+enum AccountType {
+    TREASURY
+    CHECKING
+    SAVINGS
+}
+enum AccountStatus {
+    ACTIVE
+    FROZEN
+    CLOSED
+}
+enum Currency {
+    KES
+    EUR
+    USD
+}
+
+type Account {
+    id: ID!
+    accountNumber: String!
+    type: AccountType!
+    currency: Currency!
+    status: AccountStatus!
+    nickname: String
+    isDefault: Boolean!
+    balanceCents: BigInt!
+    balanceFormatted: String!
+    createdAt: String!
+}
+
+type AccountLookup{
+    id: String!
+    accountNumber: String!
+    currency: Currency!
+    ownerName: String!
+}
+
+input CreateAccountInput {
+    type: AccountType!
+    currency: Currency!
+    nickname: String
+    openingDepositCents: BigInt
+}
+
+extend type Query {
+    myAccounts: [Account!]!
+    account(accountId: ID!): Account!
+    lookupAccount(accountNumber: String!): AccountLookup
+}
+
+extend type Mutation {
+    createAccount(input: CreateAccountInput!): Account!
+    setDefaultAccount(accountId: ID!): Boolean!
+}

@@ -1,7 +1,7 @@
 {
   "build": {
     "cmds": [
-      "npm install",
+      "npm install --legacy-peer-deps",
       "npm run build",
       "npx prisma generate"
     ]

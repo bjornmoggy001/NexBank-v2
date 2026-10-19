@@ -38,8 +38,10 @@ export function signRefreshToken(userId: string): string{
 }
 
 //TOKEN VERIFICATION
-export function verifyAccessToken(token: string | undefined): AccessTokenPayload{
-    return jwt.verify(token, getAccessSecret()) as AccessTokenPayload
+export function verifyAccessToken(token: string): AccessTokenPayload {
+    const secret = getAccessSecret()
+    const decoded = jwt.verify(token, secret)
+    return decoded as unknown as AccessTokenPayload
 }
 export function verifyRefreshToken(token: string): { userId: string } {
     return jwt.verify(token, getRefreshSecret()) as { userId: string }
